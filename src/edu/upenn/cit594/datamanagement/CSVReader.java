@@ -66,7 +66,6 @@ public class CSVReader {
                             break;
                         case 34:
                             state = STATE.ESCAPEDFIELD;
-                            field.append('"');
                             break;
                         case 13:
                             returnRow.add(field.toString());
@@ -90,6 +89,7 @@ public class CSVReader {
                             returnRow.add(field.toString());
                             field = new StringBuilder();
                             System.out.println(field + " 44");
+                            state = STATE.START;
                             break;
                         case 34:
                             throw new CSVFormatException("you cannot use quotes in a non-escaped field", 0,0,0,0);
@@ -115,17 +115,26 @@ public class CSVReader {
                         case 34:
                             int nextInt = lexer.read();
                             if (nextInt == 34) {
-                                field.append('"');
+                                //field.append('"');
                                 System.out.println("escaped double quote");
                                 state = STATE.NOTESCAPEDFIELD;
                             }
                             else if (nextInt == 44) {
-                                state = STATE.NOTESCAPEDFIELD;
+                                state = STATE.START;
                                 returnRow.add(field.toString());
                                 field = new StringBuilder();
                             }
+                            else if (nextInt == 10) {
+                                state = STATE.START;
+                                returnRow.add(field.toString());
+                                System.out.println(returnRow);
+                                return (String[]) returnRow.toArray(new String[0]);
+                            }
 
-                            else {throw new CSVFormatException("text after closing quotes", 0,0,0,0);}
+                            else {
+                                System.out.println(intRead);
+                                throw new CSVFormatException("text after closing quotes", 0,0,0,0);
+                            }
 
                             break;
 
@@ -148,7 +157,7 @@ public class CSVReader {
             intRead = lexer.read();
             try {
                 charRead = (char) intRead;
-                System.out.println(charRead + " " + intRead + " " + state);
+                //System.out.println(charRead + " " + intRead + " " + state);
             } catch (Exception e) {
                 System.out.println("not a char that can be printed");
             }

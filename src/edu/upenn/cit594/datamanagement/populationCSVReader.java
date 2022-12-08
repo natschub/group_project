@@ -26,9 +26,10 @@ public class populationCSVReader {
         CSVReader reader = new CSVReader(lexer);
 
 
+        String[] headerRow = reader.readRow();
         String[] row;
         while ((row = reader.readRow()) != null) {
-            System.out.println(row);
+            //System.out.println(row);
             String zipCode = row[0];
             Integer pop = Integer.parseInt(row[1]);
 

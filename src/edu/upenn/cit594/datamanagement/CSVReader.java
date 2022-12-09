@@ -1,12 +1,8 @@
 package edu.upenn.cit594.datamanagement;
-import java.io.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Collection;
-import java.lang.Character;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 public class CSVReader {
 
     @SuppressWarnings("unused")
@@ -61,7 +57,7 @@ public class CSVReader {
                 case START:
                     switch (intRead) {
                         case 44:
-                            returnRow.add(field.toString());
+                            returnRow.add("");
                             field = new StringBuilder();
                             break;
                         case 34:
@@ -88,13 +84,17 @@ public class CSVReader {
                         case 44:
                             returnRow.add(field.toString());
                             field = new StringBuilder();
-                            System.out.println(field + " 44");
+                            //System.out.println(field + " 44");
                             state = STATE.START;
                             break;
                         case 34:
-                            throw new CSVFormatException("you cannot use quotes in a non-escaped field", 0,0,0,0);
+                            //throw new CSVFormatException("you cannot use quotes in a non-escaped field", 0,0,0,0);
+                            state = STATE.ESCAPEDFIELD;
+                            break;
+                        //field.append("'");
                         case 13:
                             returnRow.add(field.toString());
+                            state = STATE.START;
                             field = new StringBuilder();
                             return (String[]) returnRow.toArray(new String[0]);
                         case 10:
@@ -111,46 +111,16 @@ public class CSVReader {
                 case ESCAPEDFIELD:
                     switch (intRead) {
                         case -1:
-                            throw new CSVFormatException("you are closing a file while you are in an escaped field", 0,0,0,0);
+                            throw new CSVFormatException("you are closing a file while you are in an escaped field", 0, 0, 0, 0);
                         case 34:
-                            int nextInt = lexer.read();
-                            if (nextInt == 34) {
-                                //field.append('"');
-                                System.out.println("escaped double quote");
-                                state = STATE.NOTESCAPEDFIELD;
-                            }
-                            else if (nextInt == 44) {
-                                state = STATE.START;
-                                returnRow.add(field.toString());
-                                field = new StringBuilder();
-                            }
-                            else if (nextInt == 10) {
-                                state = STATE.START;
-                                returnRow.add(field.toString());
-                                System.out.println(returnRow);
-                                return (String[]) returnRow.toArray(new String[0]);
-                            }
-
-                            else {
-                                System.out.println(intRead);
-                                throw new CSVFormatException("text after closing quotes", 0,0,0,0);
-                            }
-
+                            //int nextInt = lexer.read();
+                            state = STATE.NOTESCAPEDFIELD;
                             break;
-
-                        //field.append('"');
-
-                        //case 13:
-                        //	throw new CSVFormatException("you are returning in the middle of opened quotes", 0, 0, 0, 0);
-                        //case 10:
-                        //throw new CSVFormatException("line break in odd place", 0 , 0, 0, 0);
-
-
+                        //System.out.println("escaped double quote " + returnRow);state = STATE.NOTESCAPEDFIELD;
                         default:
                             field.append(charRead);
                             break;
                     }
-
                     break;
             }
 
@@ -162,13 +132,16 @@ public class CSVReader {
                 System.out.println("not a char that can be printed");
             }
         }
+        return null;
+
+    }
 
         ///
         /// extra set of cases here
         // return (String[]) returnRow.toArray(new String[0]);
-        return null;
     }
 
 
 
-}
+
+

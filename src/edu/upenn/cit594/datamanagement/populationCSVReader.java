@@ -2,7 +2,9 @@ package edu.upenn.cit594.datamanagement;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 
 public class populationCSVReader {
@@ -26,12 +28,16 @@ public class populationCSVReader {
         CSVReader reader = new CSVReader(lexer);
 
 
-        String[] headerRow = reader.readRow();
+        List<String> headerRow = Arrays.asList(reader.readRow());
+        Integer zipcodeIndex = headerRow.indexOf("zip_code");
+        Integer populationIndex = headerRow.indexOf("population");
+
+
         String[] row;
         while ((row = reader.readRow()) != null) {
             //System.out.println(row);
-            String zipCode = row[0];
-            Integer pop = Integer.parseInt(row[1]);
+            String zipCode = row[zipcodeIndex];
+            Integer pop = Integer.parseInt(row[populationIndex]);
 
             populationMap.put(zipCode, pop);
         }

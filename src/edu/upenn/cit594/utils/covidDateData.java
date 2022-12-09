@@ -1,24 +1,28 @@
 package edu.upenn.cit594.utils;
+import java.util.Date;
 
 public class covidDateData {
 
-    public class covidDataDate {
-        public final Integer neg;
-        public final Integer pos;
-        public final Integer hospitalized;
-        public final Integer partially_vaccinated;
-        public final Integer fully_vaccinated;
-        public final Integer deaths;
+        private final Date date;
+        private final String zipCode;
+        private final Integer neg;
+        private final Integer pos;
+        private final Integer hospitalized;
+        private final Integer partially_vaccinated;
+        private final Integer fully_vaccinated;
+        private final Integer deaths;
 
 
-        public covidDataDate(Integer neg, Integer pos, Integer hospitalized, Integer partially_vaccinated, Integer fully_vaccinated, Integer deaths) {
+
+        public covidDateData(Date date, String zipCode, Integer neg, Integer pos, Integer hospitalized, Integer partially_vaccinated, Integer fully_vaccinated, Integer deaths) {
+            this.date = date;
+            this.zipCode = zipCode;
             this.neg = neg;
             this.pos = pos;
             this.hospitalized = hospitalized;
             this.partially_vaccinated = partially_vaccinated;
             this.fully_vaccinated = fully_vaccinated;
             this.deaths = deaths;
-
         }
 
         public Integer getNeg() {
@@ -44,5 +48,9 @@ public class covidDateData {
         public Integer getDeaths() {
             return deaths;
         }
-    }
+        public String getZipCode() {return zipCode;}
+        public Date getDate() {
+            return date;
+        }
+
 }

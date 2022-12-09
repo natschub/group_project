@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 
-public class populationCSVReader {
+public class populationCSVReader implements populationReader{
 
     protected String filename;
     private CSVReader reader;

@@ -5,6 +5,9 @@ import edu.upenn.cit594.datamanagement.CSVFormatException;
 import edu.upenn.cit594.datamanagement.covidCSVReader;
 import edu.upenn.cit594.datamanagement.covidJSONReader;
 import edu.upenn.cit594.datamanagement.populationCSVReader;
+import edu.upenn.cit594.datamanagement.propertyCSVReader;
+import edu.upenn.cit594.processor.Processor;
+
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -41,7 +44,7 @@ public class Main {
     System.out.println(readerPop.getPopulationData());
 
 
-    //propertyCSVReader readerProp = new propertyCSVReader(propertiesFilename);
+    propertyCSVReader readerProp = new propertyCSVReader(propertiesFilename);
     //System.out.println(readerProp.getPropertyData());
 
     //covidCSVReader readerCovid = new covidCSVReader(covidFilename);
@@ -50,6 +53,8 @@ public class Main {
     Date testDate = new SimpleDateFormat("yy-MM-dd").parse("2021-03-25");
     System.out.println(readerCovid.getCovidDateZipData().get("19102").get(testDate).getNeg());
 
+    Processor processor = new Processor(readerPop, readerCovid, readerProp);
+    System.out.println(processor.getTotalPopulatonAll());
     /*
     Date testDate = new SimpleDateFormat("yy-MM-dd").parse("2021-03-25");
     System.out.println(readerCovid.getCovidDateZipData().get("19102").get(testDate).getNeg());

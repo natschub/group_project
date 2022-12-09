@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class propertyCSVReader {
+public class propertyCSVReader implements propertyReader{
     protected String filename;
     private CSVReader reader;
     private CSVLexer lexer;

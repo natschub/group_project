@@ -32,7 +32,7 @@ public class Logger {
 
     //non-static method
     public void log(String msg) throws IOException {
-        out.write(msg);
+        out.write(msg + "\n");
         out.flush();
     }
 }

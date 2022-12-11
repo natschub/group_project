@@ -38,7 +38,12 @@ public class Main {
 
     Logger logger = Logger.getInstance();
     logger.setLoggerOutputFile(logOutputFilename);
-    logger.log(String.valueOf(args));
+    StringBuilder filenamesString = new StringBuilder();
+    for (String filename : args) {
+        filenamesString.append(filename);
+    }
+    logger.log(filenamesString.toString());
+
     //initialize logger
     //Logger log = Logger.getInstance();
     //log.setLoggerOutputFile(logOutputFilename);

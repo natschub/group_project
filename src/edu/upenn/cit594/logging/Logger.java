@@ -32,12 +32,11 @@ public class Logger {
 
     //non-static method
     public void log(String msg) throws IOException {
-        System.currentTimeMillis();
         if(filename == null){
-            System.err.println(" "+ msg);
+            System.err.println(System.currentTimeMillis() + " " + msg);
             
         }
-        out.write(" " + msg + "\n");
+        out.write(System.currentTimeMillis() + " " + msg + "\n");
         out.flush();
     }
 }

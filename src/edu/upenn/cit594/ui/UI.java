@@ -1,5 +1,6 @@
 package edu.upenn.cit594.ui;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
@@ -7,6 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import edu.upenn.cit594.datamanagement.CSVFormatException;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 
@@ -18,7 +21,7 @@ public class UI {
 	protected String propertiesFile =null;
 	protected String populationFile = null;
 	
-	public UI(Processor processor, Logger logger, String covidFile, String propertiesFile, String populationFile) {
+	public UI(Processor processor, String covidFile, String propertiesFile, String populationFile) {
 		// TODO Auto-generated constructor stub
 			this.processor = processor;
 			this.covidFile = covidFile;
@@ -64,16 +67,16 @@ public class UI {
 				break;
 				
 			case 4:
-				showAveragePropertyMarketValue();
+				//showAveragePropertyMarketValue();
 				break;
 			case 5:
-				showAverageTotalLivableArea();
+				//showAverageTotalLivableArea();
 				break;
 			case 6: 
-				showTotalPropertyMarketValue();
+				//showTotalPropertyMarketValue();
 				break;
 			case 7:
-				showTopTenExpensiveZipcodeDeath();
+				//showTopTenExpensiveZipcodeDeath();
 				break;
 			default:
 				System.out.println(choice + " is not a valid option.");	
@@ -98,11 +101,11 @@ public class UI {
 		
 	}
 
-	private void showTotalPopulation() {
+	private void showTotalPopulation() throws CSVFormatException, IOException {
 		// TODO Auto-generated method stub
 		if(populationFile != null) {
 			System.out.println("BEGIN OUTPUT");
-			int totalPopulation = processor.getTotalPopulationAll();
+			Integer totalPopulation = processor.getTotalPopulatonAll();
 			System.out.println(totalPopulation);
 			System.out.println("END OUTPUT");
 		} else {
@@ -110,7 +113,7 @@ public class UI {
 		}
 	}
 	
-	private String specifyADate(){
+	private String specifyADate() throws IOException {
 		
 		System.out.print("Which day are you searching for? Please enter a date in the format: YYYY-MM-DD.\n"+"> ");
 		System.out.flush();
@@ -121,11 +124,16 @@ public class UI {
 	    	System.out.println( date + " is not a valid date.");
 	    	specifyADate();
 	    }
+
+		Logger logger = Logger.getInstance();
+		String msg = date;
+		logger.log(msg);
+
 		return date;
 	}
 	
 	
-	private String specifyAZipcode(){
+	private String specifyAZipcode() throws IOException {
 		
 		System.out.print("Which area are you searching for? Please enter a 5-digit Zipcode.\n"+"> ");
 		System.out.flush();
@@ -136,12 +144,17 @@ public class UI {
 	    	System.out.println( zipcode + " is not a valid date.");
 	    	specifyAZipcode();
 	    }
+
+		Logger logger = Logger.getInstance();
+		String msg = zipcode;
+		logger.log(msg);
+
 		return zipcode;
 	}
 	
 	
 
-	private void showVacciPerCapita() {
+	private void showVacciPerCapita() throws CSVFormatException, ParseException, IOException, org.json.simple.parser.ParseException {
 		// TODO Auto-generated method stub
 		
 		if(populationFile != null && covidFile != null) {
@@ -171,6 +184,7 @@ public class UI {
 		
 	}
 
+	/*
 	private void showAveragePropertyMarketValue() {
 		// TODO Auto-generated method stub
 		if(propertiesFile != null) {
@@ -198,7 +212,7 @@ public class UI {
 		}
 	}
 
-	private void showTotalPropertyMarketValue() {
+	private void showTotalPropertyMarketValue() throws CSVFormatException, IOException {
 		// TODO Auto-generated method stub
 		if(populationFile != null && propertiesFile != null) {
 			String zip = specifyAZipcode();
@@ -224,13 +238,13 @@ public class UI {
 		}else {
 			System.out.println("Option 7 is not available.");
 		}
-		
+
 	}
 	
 
 	
 	
 	
-	
+*/
 
 }

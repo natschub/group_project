@@ -81,7 +81,18 @@ public class Processor {
         if (vaccinesPerCapita.isEmpty()) {return null;}
         else {return vaccinesPerCapita;}
     }
-
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+    public int getAverageValues(String zipCode, Average propertyAttribute) {
+    	Map<String, propertyData> propertyDataMap = propertyReader.getPropertyData();
+    	if (populationMap.get(zipCode) == null) {
+            return 0;
+        }
+    	propertyData data = populationMap.get(zipCode);
+    	
+    	return propertyAttribute.getAverage(data);
+    	
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Integer getMarketValuePerCapita(String zipCode) throws CSVFormatException, IOException {
         Map<String, Integer> populationMap = populationReader.getPopulationData();
         Map<String, propertyData> propertyDataMap = propertyReader.getPropertyData();

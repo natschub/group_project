@@ -95,6 +95,7 @@ public class Main {
 		    		System.out.println("The name of this argument is not valid!");
 		    		return;
 		    }
+	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Logger logger = Logger.getInstance();
     logger.setLoggerOutputFile(logOutputFilename);

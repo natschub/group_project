@@ -70,7 +70,7 @@ public class Main {
 		    		value = value.toLowerCase();
 		    		if (!value.endsWith(".txt") && !value.endsWith(".json")) {
 		    			System.out.println("The covid file does not match a recognized extension.");
-		    			return false;
+		    			return;
 		    		}
 		    		
 		    		covidFilename = value;

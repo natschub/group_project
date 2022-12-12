@@ -122,3 +122,65 @@ public class Processor {
 }
 
 
+ public List<String> getDeathRatesperCapitaMostLeastExpensive(String dateString) throws CSVFormatException, IOException, ParseException, org.json.simple.parser.ParseException {
+        Map<String, Integer> populationMap = populationReader.getPopulationData();
+        Map<String, propertyData> propertyDataMap = propertyReader.getPropertyData();
+        Map<String, Map<Date, covidDateData>> covidDateDataMap = covidReader.getCovidDateZipData();
+
+        List<String> outputList = new ArrayList<>();
+
+        Date date = new SimpleDateFormat("yy-MM-dd").parse(dateString);
+
+        // get average market value per zipcode
+        List<String> allZipCodes = new ArrayList(populationMap.keySet());
+        SortedMap<Integer, String> marketValueByZip = new TreeMap<>();
+
+
+        for (String zipcode: allZipCodes) {
+            //System.out.println("ZIP CODE 3.7: " + zipcode);
+            Integer averageMarketVal;
+            LinkedList<Double> mv =  propertyDataMap.get(zipcode).getPropertyValues();
+            Double sum = 0.00;
+            Integer nonNulls = 0;
+            for (int i = 0; i < mv.size(); i++) {
+                if (mv.get(i) != null) {
+                    sum += mv.get(i);
+                    nonNulls++;
+                }
+            }
+
+            if (nonNulls > 0) {
+                averageMarketVal = (int) (sum / nonNulls);
+            } else {
+                averageMarketVal = 0;
+            }
+            marketValueByZip.put(averageMarketVal, zipcode);
+        }
+        //SortedMap<Integer, String> bottomFiveExpensive = marketValueByZip.tailMap(5);
+        //SortedMap<Integer, String> topFiveExpensive = marketValuePerCapita.tailMap(5);
+        //System.out.print("bottom 5 " + bottomFiveExpensive);
+        DecimalFormat df = new DecimalFormat("0.00");
+
+
+        for (Integer marketVal:  marketValueByZip.keySet()) {
+            String zipCode = marketValueByZip.get(marketVal);
+
+            if (covidDateDataMap.get(zipCode) != null && covidDateDataMap.get(zipCode).get(date) != null) {
+                Integer zipCodePop = populationMap.get(zipCode);
+
+                if ((covidDateDataMap.get(zipCode).get(date)).getDeaths() != null && (covidDateDataMap.get(zipCode).get(date)).getDeaths() != 0) {
+                    Double deathRate = ((covidDateDataMap.get(zipCode).get(date)).getDeaths() *10000 / (zipCodePop.doubleValue()));
+                    StringBuilder stringToAppend = new StringBuilder();
+                    stringToAppend.append("Zipcode: " + zipCode + " Avg Property Market Value $" + marketVal + " Deaths per 10K Popoulation as of Entered Date: " + df.format(deathRate));
+                    outputList.add(stringToAppend.toString());
+                }
+
+
+            }
+
+
+        }
+        return outputList;
+    }
+
+

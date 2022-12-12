@@ -54,7 +54,7 @@ public class Main {
 		    String value = type[1];
 		    switch (name) {
 		    	case "--log":
-		    		if(logFile != null) {
+		    		if(logOutputFilename != null) {
 		    			System.out.println("The name of log file is specified already!");
 		    			return;
 		    		}
@@ -62,7 +62,7 @@ public class Main {
 		    		break;
 		    		
 		    	case "--covid":
-		    		if(covidFile != null) {
+		    		if(covidFilename != null) {
 		    			System.out.println("The name of covid file is specified already!");
 		    			return;
 		    		}
@@ -73,23 +73,23 @@ public class Main {
 		    			return false;
 		    		}
 		    		
-		    		covidFile = value;
+		    		covidFilename = value;
 		    		break;
 		    		
 		    	case "--properties":
-		    		if(propertiesFile != null) {
+		    		if(propertiesFilename != null) {
 		    			System.out.println("The name of properties file is specified already!");
 		    			return;
 		    		}
-		    		propertiesFile = value;
+		    		propertiesFilename = value;
 		    		break;
 		    		
 		    	case "--population":
-		    		if(populationFile != null) {
+		    		if(populationFilename != null) {
 		    			System.out.println("The name of population file is specified already!");
 		    			return;
 		    		}
-		    		populationFile = value;
+		    		populationFilename = value;
 		    		break;
 		    	default:
 		    		System.out.println("The name of this argument is not valid!");

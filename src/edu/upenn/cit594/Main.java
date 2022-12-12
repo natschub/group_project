@@ -34,8 +34,68 @@ public class Main {
         String propertiesFilename = "/Users/nathanielschub/IdeaProjects/group_project/quirky_props.csv";
         String populationFilename = "/Users/nathanielschub/IdeaProjects/group_project/population.csv";
     String logOutputFilename = "/Users/nathanielschub/IdeaProjects/group_project/test_log_1.txt";
-
-
+        
+   /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        for(int i =0;i< args.length; i++) {
+			String str = args[i];
+			if(str.matches("^--(?<name>.+?)=(?<value>.+)$") == false) {
+				System.out.println("Argument does not match the form \"--name=value\"");
+			}
+			String regex = "--log=|--covid=|--properties=|--population=";
+			Pattern pattern = Pattern.compile(regex);
+		    Matcher matcher = pattern.matcher(str);
+		    
+		    if(!matcher.find()) {
+		    	System.out.println("The name of an argument is not one of the names listed above.");
+		    }
+		    
+		    String[] type = str.trim().split("=");
+		    String name = type[0];
+		    String value = type[1];
+		    switch (name) {
+		    	case "--log":
+		    		if(logFile != null) {
+		    			System.out.println("The name of log file is specified already!");
+		    			return;
+		    		}
+		    		logFile = value;
+		    		break;
+		    		
+		    	case "--covid":
+		    		if(covidFile != null) {
+		    			System.out.println("The name of covid file is specified already!");
+		    			return;
+		    		}
+		    		
+		    		value = value.toLowerCase();
+		    		if (!value.endsWith(".txt") && !value.endsWith(".json")) {
+		    			System.out.println("The covid file does not match a recognized extension.");
+		    			return false;
+		    		}
+		    		
+		    		covidFile = value;
+		    		break;
+		    		
+		    	case "--properties":
+		    		if(propertiesFile != null) {
+		    			System.out.println("The name of properties file is specified already!");
+		    			return;
+		    		}
+		    		propertiesFile = value;
+		    		break;
+		    		
+		    	case "--population":
+		    		if(populationFile != null) {
+		    			System.out.println("The name of population file is specified already!");
+		    			return;
+		    		}
+		    		populationFile = value;
+		    		break;
+		    	default:
+		    		System.out.println("The name of this argument is not valid!");
+		    		return;
+		    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     Logger logger = Logger.getInstance();
     logger.setLoggerOutputFile(logOutputFilename);
     StringBuilder filenamesString = new StringBuilder();
